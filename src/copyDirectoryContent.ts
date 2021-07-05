@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import render from './template.js'
-import { InquirerResponse } from './index.js'
+import { InquirerResponse, Plugins } from './index.js'
 
 const EXCLUSIONS = {
 	eslint: ['.eslintrc.json'],
@@ -14,14 +14,18 @@ const copyDirectoryContent = (
 ) => {
 	const filesToCreate = fs.readdirSync(templatePath)
 
+	const hasPlugin = (plugin: Plugins) => data.plugins.includes(plugin)
+
 	filesToCreate.forEach(file => {
-		if (!data.eslint && EXCLUSIONS.eslint.includes(file)) return
+		if (!hasPlugin('eslint') && EXCLUSIONS.eslint.includes(file)) return
 
 		const originalFilePath = path.join(templatePath, file)
 
 		const stats = fs.statSync(originalFilePath)
 
 		if (stats.isDirectory()) {
+			if (!hasPlugin('tests') && file === 'tests') return
+
 			fs.mkdirSync(path.join(targetPath, file))
 			return copyDirectoryContent(
 				originalFilePath,

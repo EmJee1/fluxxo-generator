@@ -10,9 +10,6 @@
 		"compiler:watch": "tsc -w",
 		"start": "cross-env NODE_ENV=production node ./dist/app",
 		"dev": "cross-env NODE_ENV=development nodemon ./dist/app",
-		"test": "cross-env NODE_ENV=development jest --testPathPattern=dist",
-		"test:watch": "cross-env NODE_ENV=development jest --watch --testPathPattern=dist",
-		"lint": "eslint ./src/ --ext .ts"
 	},
 	"homepage": "https://github.com/EmJee1/fluxxo#readme",
 	"bugs": {

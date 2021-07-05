@@ -2,17 +2,14 @@ import editJsonFile from 'edit-json-file'
 import shell from 'shelljs'
 import path from 'path'
 
-const MODULES = [
-	'@typescript-eslint/eslint-plugin',
-	'@typescript-eslint/parser',
-	'eslint',
-	'eslint-config-airbnb-base',
-	'eslint-import-resolver-typescript',
-	'eslint-plugin-import',
-]
-const SCRIPTS = { lint: 'eslint ./src/ --ext .ts' }
+const MODULES = ['@types/jest', 'jest', '@types/supertest', 'supertest']
+const SCRIPTS = {
+	test: 'cross-env NODE_ENV=development jest --testPathPattern=dist',
+	'test:watch':
+		'cross-env NODE_ENV=development jest --watch --testPathPattern=dist',
+}
 
-const eslintPlugin = (targetPath: string) => {
+const testsPlugin = (targetPath: string) => {
 	const packageJson = editJsonFile(path.join(targetPath, 'package.json'))
 
 	Object.entries(SCRIPTS).forEach(([key, value]) =>
@@ -24,4 +21,4 @@ const eslintPlugin = (targetPath: string) => {
 	MODULES.forEach(module => shell.exec(`npm i -D ${module} --silent`))
 }
 
-export default eslintPlugin
+export default testsPlugin
