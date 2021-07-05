@@ -9,6 +9,7 @@ import copyDirectoryContent from './copyDirectoryContent.js'
 import installModules from './plugins/installModules.js'
 import eslintPlugin from './plugins/eslint.js'
 import testsPlugin from './plugins/tests.js'
+import seedersPlugin from './plugins/seeders.js'
 
 export type Databases = 'Mongoose' | 'MySQL'
 export type Plugins = 'eslint' | 'tests' | 'seeders' | 'docs' | 'queues'
@@ -70,9 +71,11 @@ inquirer
 
 		const hasPlugin = (plugin: Plugins) => plugins.includes(plugin)
 
-		// if (hasPlugin('eslint'))
-		// 	spinnerify('⚖️ Configuring eslint', () => eslintPlugin(targetPath))
+		if (hasPlugin('eslint'))
+			spinnerify('⚖️ Configuring eslint', () => eslintPlugin(targetPath))
 		if (hasPlugin('tests'))
 			spinnerify('🧪 Configuring tests', () => testsPlugin(targetPath))
+		if (hasPlugin('seeders'))
+			spinnerify('🌾 Configuring seeders', () => seedersPlugin(targetPath))
 	})
 	.catch(console.error)
