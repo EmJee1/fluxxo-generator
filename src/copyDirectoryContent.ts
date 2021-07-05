@@ -3,6 +3,10 @@ import fs from 'fs'
 import render from './template.js'
 import { InquirerResponse } from './index.js'
 
+const EXCLUSIONS = {
+	eslint: ['.eslintrc.json'],
+}
+
 const copyDirectoryContent = (
 	templatePath: string,
 	targetPath: string,
@@ -11,6 +15,8 @@ const copyDirectoryContent = (
 	const filesToCreate = fs.readdirSync(templatePath)
 
 	filesToCreate.forEach(file => {
+		if (!data.eslint && EXCLUSIONS.eslint.includes(file)) return
+
 		const originalFilePath = path.join(templatePath, file)
 
 		const stats = fs.statSync(originalFilePath)
@@ -26,8 +32,7 @@ const copyDirectoryContent = (
 
 		let fileContent = fs.readFileSync(originalFilePath, 'utf-8')
 
-		if (path.extname(file) !== '.ejs')
-			fileContent = render(fileContent, data)
+		if (path.extname(file) !== '.ejs') fileContent = render(fileContent, data)
 
 		const writePath = path.join(targetPath, file)
 

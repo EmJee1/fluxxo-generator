@@ -6,6 +6,9 @@
 	"scripts": {
 		"start": "node dist/index.js"
 	},
+	"bin": {
+		"generate": "dist/index.js"
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
