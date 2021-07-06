@@ -10,22 +10,15 @@ import installModules from './plugins/installModules.js'
 import eslintPlugin from './plugins/eslint.js'
 import testsPlugin from './plugins/tests.js'
 import seedersPlugin from './plugins/seeders.js'
+import docsPlugin from './plugins/docs.js'
+import queuesPlugin from './plugins/queues.js'
 
-export type Databases = 'Mongoose' | 'MySQL'
 export type Plugins = 'eslint' | 'tests' | 'seeders' | 'docs' | 'queues'
-
-const CHOICES: Databases[] = ['Mongoose', 'MySQL']
 
 const QUESTIONS = [
 	{
 		name: 'name',
 		message: 'Project name:',
-	},
-	{
-		name: 'database',
-		type: 'list',
-		message: 'Select your desired database system',
-		choices: CHOICES,
 	},
 	{
 		name: 'plugins',
@@ -43,7 +36,6 @@ const QUESTIONS = [
 
 export interface InquirerResponse {
 	name: string
-	database: Databases
 	plugins: Plugins[]
 }
 
@@ -67,15 +59,19 @@ inquirer
 			copyDirectoryContent(originalPath, targetPath, inquirerData)
 		)
 
-		// spinnerify('📦 Installing dependencies', () => postProcess(targetPath))
+		spinnerify('📦 Installing dependencies', () => installModules(targetPath))
 
 		const hasPlugin = (plugin: Plugins) => plugins.includes(plugin)
 
 		if (hasPlugin('eslint'))
-			spinnerify('⚖️ Configuring eslint', () => eslintPlugin(targetPath))
+			spinnerify('⚖️  Configuring eslint', () => eslintPlugin(targetPath))
 		if (hasPlugin('tests'))
 			spinnerify('🧪 Configuring tests', () => testsPlugin(targetPath))
 		if (hasPlugin('seeders'))
 			spinnerify('🌾 Configuring seeders', () => seedersPlugin(targetPath))
+		if (hasPlugin('docs'))
+			spinnerify('📰 Configuring documentation', () => docsPlugin(targetPath))
+		if (hasPlugin('queues'))
+			spinnerify('🚦 Configuring queues', () => queuesPlugin(targetPath))
 	})
 	.catch(console.error)
