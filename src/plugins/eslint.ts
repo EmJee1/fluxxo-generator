@@ -1,6 +1,4 @@
-import editJsonFile from 'edit-json-file'
 import shell from 'shelljs'
-import path from 'path'
 import updatePackageScripts from '../updatePackageScripts.js'
 
 const MODULES = [
