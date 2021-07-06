@@ -7,7 +7,7 @@
 		"start": "node dist/index.js"
 	},
 	"bin": {
-		"generate": "dist/index.js"
+		"create-fluxxo-app": "dist/index.js"
 	},
 	"keywords": [],
 	"author": "",
