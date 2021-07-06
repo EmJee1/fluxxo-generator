@@ -1,6 +1,5 @@
-import editJsonFile from 'edit-json-file'
 import shell from 'shelljs'
-import path from 'path'
+import updatePackageScripts from '../updatePackageScripts.js'
 
 const MODULES = ['@types/jest', 'jest', '@types/supertest', 'supertest']
 const SCRIPTS = {
@@ -10,12 +9,7 @@ const SCRIPTS = {
 }
 
 const testsPlugin = (targetPath: string) => {
-	const packageJson = editJsonFile(path.join(targetPath, 'package.json'))
-
-	Object.entries(SCRIPTS).forEach(([key, value]) =>
-		packageJson.set(`scripts.${key}`, value)
-	)
-	packageJson.save()
+	updatePackageScripts(targetPath, SCRIPTS)
 
 	shell.cd(targetPath)
 	MODULES.forEach(module => shell.exec(`npm i -D ${module} --silent`))
